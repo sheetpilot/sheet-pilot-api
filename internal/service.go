@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"sheetpilot/sheet-pilot-api/api/router"
+	"github.com/sheetpilot/sheet-pilot-api/api/router"
 	"github.com/sirupsen/logrus"
 )
 

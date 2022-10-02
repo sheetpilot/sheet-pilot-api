@@ -6,7 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"sheetpilot/sheet-pilot-api/internal"
+	"github.com/sheetpilot/sheet-pilot-api/internal"
 )
 
 var log *logrus.Entry

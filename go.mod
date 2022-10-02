@@ -1,4 +1,4 @@
-module sheetpilot/sheet-pilot-api
+module github.com/sheetpilot/sheet-pilot-api
 
 go 1.19
 
