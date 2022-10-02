@@ -5,7 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	sproto "github.com/sheetpilot/sheet-pilot-proto/scaleservice"
+
 	"github.com/sheetpilot/sheet-pilot-api/api/router"
+	"github.com/sheetpilot/sheet-pilot-api/internal/scaleservice"
 	"github.com/sirupsen/logrus"
 )
 
@@ -26,7 +29,16 @@ func New(ctx context.Context, log *logrus.Entry, configs Config) (*Service, erro
 		CorsMethods: []string{"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 	})
 
-	handler := router.SetupRouter()
+	scaleSvcConn, err := router.SetupSvcConn(ctx, configs.SheetPilotServiceAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	scaleSvcClient := sproto.NewScaleServiceClient(scaleSvcConn)
+
+	scaleService, err := scaleservice.New(log, scaleSvcClient)
+
+	handler := router.SetupRouter(scaleService)
 	log.Info("starting the router")
 
 	return &Service{
