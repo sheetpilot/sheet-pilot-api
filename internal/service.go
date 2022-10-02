@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/sheetpilot/sheet-pilot-api/api/router"
@@ -15,8 +16,8 @@ type Config struct {
 }
 
 type Service struct {
-	Router *router.Router
-	Addr   string
+	Handler http.Handler
+	Addr    string
 }
 
 func New(ctx context.Context, log *logrus.Entry, configs Config) (*Service, error) {
@@ -25,16 +26,17 @@ func New(ctx context.Context, log *logrus.Entry, configs Config) (*Service, erro
 		CorsMethods: []string{"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 	})
 
-	router.SetupRouter()
+	handler := router.SetupRouter()
 	log.Info("starting the router")
 
 	return &Service{
-		Router: router,
-		Addr:   configs.ListenAddress,
+		Handler: handler,
+		Addr:    configs.ListenAddress,
 	}, nil
 }
 
 func (s *Service) Start() {
+	log.Printf("public server Listening at %s", s.Addr)
 
-	http.ListenAndServe(s.Addr, s.Router)
+	http.ListenAndServe(s.Addr, s.Handler)
 }
