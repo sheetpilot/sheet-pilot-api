@@ -22,7 +22,6 @@ func init() {
 }
 
 func main() {
-
 	options := internal.Config{
 		ListenAddress:            os.Getenv("LISTEN_ADDRESS"),
 		SheetPilotServiceAddress: os.Getenv("SHEETPILOT_SERVICE_ADDRESS"),
@@ -33,6 +32,5 @@ func main() {
 		log.WithError(err).Fatal("internal.New()")
 	}
 
-	svc.Start() // start app http.ListenAndServe
-
+	svc.Start()
 }
