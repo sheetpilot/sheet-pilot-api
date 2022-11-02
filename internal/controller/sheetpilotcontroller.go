@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"context"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 
+	"github.com/sheetpilot/sheet-pilot-api/internal/model"
 	"github.com/sheetpilot/sheet-pilot-api/internal/scaleservice"
 )
 
@@ -40,10 +43,23 @@ func (controller *SheetPilotController) healthCheck(w http.ResponseWriter, r *ht
 }
 
 func (app *SheetPilotController) scaleProcess(w http.ResponseWriter, r *http.Request) {
-	// ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
-	// defer cancel()
+	scale, err := model.TransformScaleObject(r.Body)
+	if err != nil {
+		return // TODO: return http error
+	}
 
-	// response, err := app.scaleservice.SendScaleRequest(ctx)
+	if err := scale.Validate(); err != nil {
+		return // TODO: return http error
+	}
 
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute*3)
+	defer cancel()
+
+	_, err = app.scaleservice.SendScaleRequest(ctx, scale.UpdatedRow)
+	if err != nil {
+		return // TODO: return http error
+	}
+
+	// TODO: return http response using response.Data
 	return
 }

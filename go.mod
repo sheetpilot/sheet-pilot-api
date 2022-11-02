@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
-	github.com/sheetpilot/sheet-pilot-proto v0.0.0-20221002024531-181df7ba5484
+	github.com/sheetpilot/sheet-pilot-proto v0.0.0-20221030074648-5ffc14269bf3
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/grpc v1.49.0
 )

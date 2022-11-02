@@ -15,8 +15,10 @@ func New(log *logrus.Entry, client pb.ScaleServiceClient) (*ScaleService, error)
 	return &ScaleService{client: client}, nil
 }
 
-func (s *ScaleService) SendScaleRequest(ctx context.Context) (*pb.ScaleResponse, error) {
-	req := &pb.ScaleRequest{}
+func (s *ScaleService) SendScaleRequest(ctx context.Context, updatedRow []*pb.ScaleRequest_Updatedrow) (*pb.ScaleResponse, error) {
+	req := &pb.ScaleRequest{
+		UpdatedRow: updatedRow,
+	}
 
 	response, err := s.client.ScaleServiceRequest(ctx, req)
 	if err != nil {
